@@ -24,7 +24,7 @@ const ccp = JSON.parse(ccpJSON);
 const util = require('util');
 
 exports.connectToNetwork = async function (userName) {
-  
+
   const gateway = new Gateway();
 
   try {
@@ -98,19 +98,19 @@ exports.invoke = async function (networkObj, isQuery, func, args) {
         let response = await networkObj.contract.evaluateTransaction(func, args);
         console.log(response);
         console.log(`Transaction ${func} with args ${args} has been evaluated`);
-  
+
         await networkObj.gateway.disconnect();
-  
+
         return response;
-        
+
       } else {
 
         let response = await networkObj.contract.evaluateTransaction(func);
         console.log(response);
         console.log(`Transaction ${func} without args has been evaluated`);
-  
+
         await networkObj.gateway.disconnect();
-  
+
         return response;
       }
     } else {
@@ -129,15 +129,15 @@ exports.invoke = async function (networkObj, isQuery, func, args) {
         console.log(util.inspect(args));
 
         console.log('before submit');
-        console.log(util.inspect(networkObj));
+        // console.log(util.inspect(networkObj));
         let response = await networkObj.contract.submitTransaction(func, args);
         console.log('after submit');
 
         console.log(response);
         console.log(`Transaction ${func} with args ${args} has been submitted`);
-  
+
         await networkObj.gateway.disconnect();
-  
+
         return response;
 
 
@@ -145,9 +145,9 @@ exports.invoke = async function (networkObj, isQuery, func, args) {
         let response = await networkObj.contract.submitTransaction(func);
         console.log(response);
         console.log(`Transaction ${func} with args has been submitted`);
-  
+
         await networkObj.gateway.disconnect();
-  
+
         return response;
       }
     }
@@ -158,15 +158,15 @@ exports.invoke = async function (networkObj, isQuery, func, args) {
   }
 };
 
-exports.registerVoter = async function (voterId, registrarId, firstName, lastName) {
+exports.registerVoter = async function (voterId, name, email, password, date) {
 
-  console.log('registrarId');
-  console.log(registrarId);
+  console.log('name');
+  console.log(name);
 
   console.log('voterId ');
   console.log(voterId);
 
-  if (!registrarId || !voterId || !firstName || !lastName) {
+  if (!name || !voterId || !email || !password) {
     let response = {};
     response.error = 'Error! You need to fill all fields before you can register!';
     return response;
@@ -196,7 +196,7 @@ exports.registerVoter = async function (voterId, registrarId, firstName, lastNam
       console.log(`An identity for the admin user ${appAdmin} does not exist in the wallet`);
       console.log('Run the enrollAdmin.js application before retrying');
       let response = {};
-      response.error = `An identity for the admin user ${appAdmin} does not exist in the wallet. 
+      response.error = `An identity for the admin user ${appAdmin} does not exist in the wallet.
         Run the enrollAdmin.js application before retrying`;
       return response;
     }
@@ -216,8 +216,8 @@ exports.registerVoter = async function (voterId, registrarId, firstName, lastNam
     const enrollment = await ca.enroll({ enrollmentID: voterId, enrollmentSecret: secret });
     const userIdentity = await X509WalletMixin.createIdentity(orgMSPID, enrollment.certificate, enrollment.key.toBytes());
     await wallet.import(voterId, userIdentity);
-    console.log(`Successfully registered voter ${firstName} ${lastName}. Use voterId ${voterId} to login above.`);
-    let response = `Successfully registered voter ${firstName} ${lastName}. Use voterId ${voterId} to login above.`;
+    console.log(`Successfully registered voter ${name}. Use voterId ${voterId} to login above.`);
+    let response = `Successfully registered voter ${name}. Use voterId ${voterId} to login above.`;
     return response;
   } catch (error) {
     console.error(`Failed to register user + ${voterId} + : ${error}`);

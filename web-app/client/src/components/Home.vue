@@ -4,14 +4,16 @@
     <h3>If you are a registered voter, enter your voterId below</h3>
     <!--span><b>{{ response }}</b></span><br /-->
     <form v-on:submit="validateVoter">
-      <input type="text" v-model="loginData.voterId" placeholder="Enter VoterId">
+      <input type="text" v-model="loginData.email" placeholder="Enter email">
+      <input type="password" v-model="loginData.password" placeholder="Enter password">
+
       <br>
 
       <input type="submit" value="Login">
       <br>
       <br>
       <span v-if="loginReponse">
-        <b>{{ loginReponse.data }}</b>
+        <b>{{ loginReponse }}</b>
       </span>
       <br>
     </form>
@@ -19,14 +21,13 @@
     <br>
     <h3>Otherwise, fill out the form below to register!</h3>
     <form v-on:submit="registerVoter">
-      <input type="text" v-model="registerData.voterId" placeholder="Enter Drivers License">
+      <input type="text" v-model="registerData.name" placeholder="name">
       <br>
-      <input type="text" v-model="registerData.registrarId" placeholder="Enter Registrar ID">
+      <input type="text" v-model="registerData.email" placeholder="email">
       <br>
-      <input type="text" v-model="registerData.firstName" placeholder="Enter first name">
+      <input type="text" v-model="registerData.password" placeholder="password">
       <br>
-      <input type="text" v-model="registerData.lastName" placeholder="Enter last name">
-      <br>
+
       <input type="submit" value="Register">
     </form>
     <br>
@@ -64,10 +65,9 @@ export default {
 
       await this.runSpinner();
       const apiResponse = await PostsService.registerVoter(
-        this.registerData.voterId,
-        this.registerData.registrarId,
-        this.registerData.firstName,
-        this.registerData.lastName
+        this.registerData.name,
+        this.registerData.email,
+        this.registerData.password,
       );
 
       console.log(apiResponse);
@@ -78,25 +78,26 @@ export default {
     async validateVoter() {
       await this.runSpinner();
 
-      if (!this.loginData.voterId) {
+      if (!this.loginData.email) {
         console.log("!thislogin");
-        let response = 'Please enter a VoterId';
+        let response = 'Please enter a email';
         this.loginReponse.data = response;
         await this.hideSpinner();
       } else {
         const apiResponse = await PostsService.validateVoter(
-          this.loginData.voterId
+          this.loginData.email,
+          this.loginData.password
         );
         console.log("apiResponse");
         console.log(apiResponse.data);
 
-        if (apiResponse.data.error) {
-          // console.log(apiResponse);
-          console.log(apiResponse.data.error);
-          this.loginReponse = apiResponse.data.error;
-        } else {
-          this.$router.push("castBallot");
-        }
+        // if (apiResponse.data.error) {
+        //   // console.log(apiResponse);
+        //   console.log(apiResponse.data.error);
+        //   this.loginReponse = apiResponse.data.error;
+        // } else {
+        //   this.$router.push("castBallot");
+        // }
 
         console.log(apiResponse);
         this.loginReponse = apiResponse;

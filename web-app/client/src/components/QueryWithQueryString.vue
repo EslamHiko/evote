@@ -46,9 +46,9 @@ export default {
     async queryByQueryString(selected) {
       this.response = null;
       this.runSpinner();
- 
+
       //check to make sure the user selected something
-      if (this.selected != 'ballot' && this.selected != 'election' 
+      if (this.selected != 'ballot' && this.selected != 'election'
         && this.selected!= 'voter' && this.selected != 'votableItem') {
 
         console.log('this . selectionesdfsdfds')
@@ -65,7 +65,7 @@ export default {
       console.log("query by object type called");
       this.hideSpinner();
       }
-      
+
     },
     async runSpinner() {
       this.$refs.Spinner.show();

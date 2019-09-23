@@ -2,7 +2,7 @@ import Api from '@/services/api'
 
 export default {
   castBallot(electionId, voterId, picked) {
-    return Api().post('castBallot', {       
+    return Api().post('castBallot', {
       electionId: electionId,
       voterId: voterId,
       picked: picked
@@ -17,26 +17,25 @@ export default {
   queryWithQueryString(selected) {
     return Api().post('queryWithQueryString', {
       selected: selected
-    }) 
+    })
   },
-  registerVoter(voterId, registrarId, firstName, lastName) {
-    return Api().post('registerVoter', {
-      voterId: voterId,
-      registrarId: registrarId,
-      firstName: firstName,
-      lastName: lastName,
-      
-    }) 
+  registerVoter(name, email, password) {
+    return Api().post('register', {
+      name: name,
+      email: email,
+      password: password,
+    })
   },
-  validateVoter(voterId) {
-    return Api().post('validateVoter', {
-      voterId: voterId
-    }) 
+  validateVoter(email,password) {
+    return Api().post('login', {
+      email: email,
+      password:password
+    })
   },
   queryByKey(key) {
     return Api().post('queryByKey', {
       key: key
-    }) 
+    })
   },
   getCurrentStanding() {
     return Api().get('getCurrentStanding')
